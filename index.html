@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Raízes do Nordeste - Protótipo QA</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand"><span class="logo">RN</span><div><strong>Raízes do Nordeste</strong><small>Protótipo acadêmico - QA</small></div></div>
+    <span id="unitBadge" class="badge">Unidade Curitiba Centro</span>
+  </header>
+
+  <main>
+    <section id="screen-consent" class="screen active">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Bem-vindo</p>
+          <h1>Sabores do Nordeste, do seu jeito.</h1>
+          <p>Escolha seus pratos, acompanhe o pedido e acumule pontos no programa de fidelidade.</p>
+        </div>
+        <div class="hero-card">🥘<span>Pedido rápido, seguro e responsivo</span></div>
+      </div>
+      <div class="card privacy-card">
+        <h2>Privacidade e LGPD</h2>
+        <p>Usamos apenas os dados necessários para processar seu pedido, oferecer fidelidade e melhorar sua experiência. Você pode alterar suas preferências a qualquer momento.</p>
+        <label class="check"><input id="consent" type="checkbox"/> Concordo com o uso dos meus dados para execução do pedido e programa de fidelidade.</label>
+        <div class="actions"><button class="btn secondary" onclick="showPolicy()">Ver detalhes</button><button class="btn" onclick="acceptConsent()">Continuar</button></div>
+        <p id="consentError" class="error"></p>
+      </div>
+    </section>
+
+    <section id="screen-menu" class="screen">
+      <div class="section-head"><div><p class="eyebrow">Cardápio</p><h1>Escolha seu pedido</h1></div><button class="linkbtn" onclick="openOrders()">Meus pedidos</button></div>
+      <div class="channel-strip"><span>Canal:</span><button class="chip selected">WEB</button><button class="chip">APP</button><button class="chip">TOTEM</button><button class="chip">BALCÃO</button><button class="chip">PICKUP</button></div>
+      <div class="grid" id="productGrid"></div>
+      <div class="floating-cart" onclick="goCart()"><span>🛒 Carrinho</span><strong id="cartCount">0 itens</strong><span id="cartTotal">R$ 0,00</span></div>
+    </section>
+
+    <section id="screen-cart" class="screen">
+      <button class="back" onclick="go('screen-menu')">← Voltar ao cardápio</button>
+      <div class="section-head"><div><p class="eyebrow">Carrinho</p><h1>Revise seu pedido</h1></div></div>
+      <div class="two-col">
+        <div class="card"><div id="cartItems"></div><div class="coupon"><input id="coupon" placeholder="Cupom promocional"/><button class="btn small" onclick="applyCoupon()">Aplicar</button></div><p id="couponMsg" class="helper"></p></div>
+        <div class="card summary"><h2>Resumo</h2><div><span>Subtotal</span><strong id="subtotal">R$ 0,00</strong></div><div><span>Desconto</span><strong id="discount">R$ 0,00</strong></div><div class="total"><span>Total</span><strong id="grandTotal">R$ 0,00</strong></div><button class="btn full" onclick="goPayment()">Ir para pagamento</button></div>
+      </div>
+    </section>
+
+    <section id="screen-payment" class="screen">
+      <button class="back" onclick="go('screen-cart')">← Voltar ao carrinho</button>
+      <div class="section-head"><div><p class="eyebrow">Pagamento</p><h1>Pagamento simulado</h1><p class="helper">Nenhuma cobrança real será realizada.</p></div></div>
+      <div class="two-col">
+        <div class="card">
+          <h2>Forma de pagamento</h2>
+          <label class="radio"><input type="radio" name="pay" value="pix" checked/> PIX simulado</label>
+          <label class="radio"><input type="radio" name="pay" value="card"/> Cartão simulado</label>
+          <label class="radio"><input type="radio" name="pay" value="counter"/> Pagar no balcão</label>
+          <label class="check"><input id="saveData" type="checkbox"/> Autorizar armazenamento da preferência de pagamento para facilitar próximos pedidos.</label>
+        </div>
+        <div class="card summary"><h2>Confirmação</h2><div><span>Unidade</span><strong>Curitiba Centro</strong></div><div><span>Canal</span><strong>WEB</strong></div><div><span>Total</span><strong id="payTotal">R$ 0,00</strong></div><button class="btn full" onclick="finishOrder()">Confirmar pedido</button><button class="btn secondary full" onclick="simulateFailure()">Simular falha externa</button><p id="payMsg" class="error"></p></div>
+      </div>
+    </section>
+
+    <section id="screen-success" class="screen">
+      <div class="success-card card"><div class="success-icon">✓</div><p class="eyebrow">Pedido confirmado</p><h1 id="orderNumber">Pedido #0000</h1><p>Seu pedido foi registrado com sucesso. Acompanhe o status abaixo.</p><div class="timeline"><span class="done">Recebido</span><span class="active">Em preparo</span><span>Pronto</span><span>Finalizado</span></div><div class="points">+ <strong>18 pontos</strong> no Raízes Fidelidade</div><button class="btn" onclick="newOrder()">Fazer novo pedido</button></div>
+    </section>
+
+    <section id="screen-orders" class="screen">
+      <button class="back" onclick="go('screen-menu')">← Voltar</button>
+      <div class="section-head"><div><p class="eyebrow">Histórico</p><h1>Meus pedidos</h1></div></div>
+      <div class="card"><div class="order-row"><div><strong>#4281</strong><small>14/09/2026 - Curitiba Centro</small></div><span class="status success">Finalizado</span><strong>R$ 42,90</strong></div><div class="order-row"><div><strong>#4217</strong><small>03/09/2026 - Curitiba Centro</small></div><span class="status success">Finalizado</span><strong>R$ 31,50</strong></div></div>
+    </section>
+  </main>
+
+  <footer>Protótipo acadêmico - Projeto Multidisciplinar de Qualidade de Software - Alfredo Junior - RU 4913244</footer>
+</div>
+
+<div id="modal" class="modal hidden"><div class="modal-card"><button class="modal-close" onclick="closeModal()">×</button><h2>Uso de dados pessoais</h2><p><strong>Finalidade:</strong> processar pedidos, registrar histórico e permitir fidelização.</p><p><strong>Dados mínimos:</strong> nome, contato, unidade selecionada, itens do pedido e consentimentos.</p><p><strong>Segurança:</strong> acesso autenticado, logs de auditoria e proteção contra acesso indevido.</p><p><strong>Direitos:</strong> consulta, correção e exclusão quando aplicável, conforme a LGPD.</p><button class="btn" onclick="closeModal()">Entendi</button></div></div>
+<script src="app.js"></script>
+</body>
+</html>
