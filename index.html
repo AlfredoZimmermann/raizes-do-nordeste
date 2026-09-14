@@ -35,6 +35,10 @@
     <section id="screen-menu" class="screen">
       <div class="section-head"><div><p class="eyebrow">Cardápio</p><h1>Escolha seu pedido</h1></div><button class="linkbtn" onclick="openOrders()">Meus pedidos</button></div>
       <div class="channel-strip"><span>Canal:</span><button class="chip selected" data-channel="WEB" onclick="selectChannel('WEB', this)">WEB</button><button class="chip" data-channel="APP" onclick="selectChannel('APP', this)">APP</button><button class="chip" data-channel="TOTEM" onclick="selectChannel('TOTEM', this)">TOTEM</button><button class="chip" data-channel="BALCÃO" onclick="selectChannel('BALCÃO', this)">BALCÃO</button><button class="chip" data-channel="PICKUP" onclick="selectChannel('PICKUP', this)">PICKUP</button></div><p id="channelMsg" class="helper">Canal ativo: WEB</p>
+<div id="channelPanel" class="channel-panel">
+  <strong id="channelTitle">Pedido pelo site</strong>
+  <span id="channelDescription">Fluxo pensado para compra pelo navegador, com entrega ou retirada.</span>
+</div>
       <div class="grid" id="productGrid"></div>
       <div class="floating-cart" onclick="goCart()"><span>🛒 Carrinho</span><strong id="cartCount">0 itens</strong><span id="cartTotal">R$ 0,00</span></div>
     </section>

@@ -11,15 +11,60 @@ function money(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BR
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
 
 function selectChannel(channel, el){
-  selectedChannel=channel;
-  document.querySelectorAll('.channel-strip .chip').forEach(b=>b.classList.remove('selected'));
-  if(el) el.classList.add('selected');
-  const msg=document.getElementById('channelMsg');
-  if(msg) msg.textContent=`Canal ativo: ${channel}. O fluxo do pedido será validado neste canal.`;
-  const payChannel=document.getElementById('payChannel');
-  if(payChannel) payChannel.textContent=channel;
-  const successChannel=document.getElementById('successChannel');
-  if(successChannel) successChannel.textContent=channel;
+  selectedChannel = channel;
+
+  document.querySelectorAll('.channel-strip .chip')
+    .forEach(b => b.classList.remove('selected'));
+  if (el) el.classList.add('selected');
+
+  const configs = {
+    'WEB': {
+      title: 'Pedido pelo site',
+      desc: 'Fluxo pelo navegador. O cliente escolhe os itens e pode optar por entrega ou retirada.'
+    },
+    'APP': {
+      title: 'Pedido pelo aplicativo',
+      desc: 'Experiência mobile com navegação rápida, fidelidade e acompanhamento do pedido pelo celular.'
+    },
+    'TOTEM': {
+      title: 'Autoatendimento no totem',
+      desc: 'Fluxo de autoatendimento na unidade, com seleção dos itens na tela e retirada no balcão.'
+    },
+    'BALCÃO': {
+      title: 'Atendimento no balcão',
+      desc: 'Pedido registrado com apoio do atendente da unidade, mantendo preços, promoções e fidelidade padronizados.'
+    },
+    'PICKUP': {
+      title: 'Pedido para retirada',
+      desc: 'Fluxo de retirada na unidade escolhida, sem entrega em domicílio e com confirmação para coleta.'
+    }
+  };
+
+  const cfg = configs[channel] || configs['WEB'];
+
+  const msg = document.getElementById('channelMsg');
+  if (msg) msg.textContent = `Canal ativo: ${channel}`;
+
+  const title = document.getElementById('channelTitle');
+  if (title) title.textContent = cfg.title;
+
+  const desc = document.getElementById('channelDescription');
+  if (desc) desc.textContent = cfg.desc;
+
+  const payChannel = document.getElementById('payChannel');
+  if (payChannel) payChannel.textContent = channel;
+
+  const successChannel = document.getElementById('successChannel');
+  if (successChannel) successChannel.textContent = channel;
+
+  // Ajustes visuais/funcionais simples por canal
+  document.body.setAttribute('data-channel', channel);
+
+  // Mensagem contextual no carrinho/pagamento
+  const contextual = document.getElementById('channelContext');
+  if (contextual) {
+    contextual.textContent = cfg.desc;
+  }
 }
 
 function showPolicy(){document.getElementById('modal').classList.remove('hidden')}
@@ -38,3 +83,8 @@ function finishOrder(){document.getElementById('payMsg').textContent='';const su
 function newOrder(){cart={};discount=0;updateCartBar();go('screen-menu')}
 function openOrders(){go('screen-orders')}
 renderProducts();updateCartBar();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const first = document.querySelector('.channel-strip .chip[data-channel="WEB"]');
+  selectChannel('WEB', first);
+});
