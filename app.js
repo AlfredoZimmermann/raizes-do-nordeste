@@ -6,9 +6,22 @@ const products=[
  {id:5,name:'Tapioca Nordestina',desc:'Tapioca com queijo coalho, tomate e orégano.',price:16.9,emoji:'🫓'},
  {id:6,name:'Cartola',desc:'Banana, queijo, açúcar e canela.',price:14.5,emoji:'🍌'}
 ];
-let cart={}; let discount=0;
+let cart={}; let discount=0; let selectedChannel='WEB';
 function money(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+
+function selectChannel(channel, el){
+  selectedChannel=channel;
+  document.querySelectorAll('.channel-strip .chip').forEach(b=>b.classList.remove('selected'));
+  if(el) el.classList.add('selected');
+  const msg=document.getElementById('channelMsg');
+  if(msg) msg.textContent=`Canal ativo: ${channel}. O fluxo do pedido será validado neste canal.`;
+  const payChannel=document.getElementById('payChannel');
+  if(payChannel) payChannel.textContent=channel;
+  const successChannel=document.getElementById('successChannel');
+  if(successChannel) successChannel.textContent=channel;
+}
+
 function showPolicy(){document.getElementById('modal').classList.remove('hidden')}
 function closeModal(){document.getElementById('modal').classList.add('hidden')}
 function acceptConsent(){if(!document.getElementById('consent').checked){document.getElementById('consentError').textContent='É necessário registrar o consentimento para continuar neste protótipo.';return;} document.getElementById('consentError').textContent='';go('screen-menu')}
@@ -19,9 +32,9 @@ function goCart(){renderCart();go('screen-cart')}
 function renderCart(){let html='';let subtotal=0;for(const p of products){const q=cart[p.id]||0;if(!q)continue;subtotal+=q*p.price;html+=`<div class="cart-line"><div><strong>${p.name}</strong><small>${q} x ${money(p.price)}</small></div><strong>${money(q*p.price)}</strong><button class="linkbtn" onclick="removeItem(${p.id})">Remover</button></div>`}if(!html)html='<p class="helper">Seu carrinho está vazio.</p>';document.getElementById('cartItems').innerHTML=html;const d=subtotal*discount;document.getElementById('subtotal').textContent=money(subtotal);document.getElementById('discount').textContent='- '+money(d);document.getElementById('grandTotal').textContent=money(subtotal-d);document.getElementById('payTotal').textContent=money(subtotal-d)}
 function removeItem(id){delete cart[id];renderCart();updateCartBar()}
 function applyCoupon(){const c=document.getElementById('coupon').value.trim().toUpperCase();if(c==='RAIZES10'){discount=.10;document.getElementById('couponMsg').textContent='Cupom aplicado: 10% de desconto.';}else{discount=0;document.getElementById('couponMsg').textContent='Cupom inválido ou expirado.';}renderCart()}
-function goPayment(){if(Object.keys(cart).length===0){document.getElementById('couponMsg').textContent='Adicione pelo menos um item para continuar.';return;}renderCart();go('screen-payment')}
+function goPayment(){const payChannel=document.getElementById('payChannel');if(payChannel)payChannel.textContent=selectedChannel;if(Object.keys(cart).length===0){document.getElementById('couponMsg').textContent='Adicione pelo menos um item para continuar.';return;}renderCart();go('screen-payment')}
 function simulateFailure(){document.getElementById('payMsg').textContent='Falha simulada: serviço externo indisponível. Nenhum pedido foi duplicado. Tente novamente.'}
-function finishOrder(){document.getElementById('payMsg').textContent='';document.getElementById('orderNumber').textContent='Pedido #'+Math.floor(4300+Math.random()*500);go('screen-success')}
+function finishOrder(){document.getElementById('payMsg').textContent='';const successChannel=document.getElementById('successChannel');if(successChannel)successChannel.textContent=selectedChannel;document.getElementById('orderNumber').textContent='Pedido #'+Math.floor(4300+Math.random()*500);go('screen-success')}
 function newOrder(){cart={};discount=0;updateCartBar();go('screen-menu')}
 function openOrders(){go('screen-orders')}
 renderProducts();updateCartBar();

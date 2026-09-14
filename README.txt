@@ -17,3 +17,5 @@ Fluxos demonstrados:
 5. Falha de integração externa
 6. Confirmação e fidelidade
 7. Histórico de pedidos
+
+Atualização: os cinco canais (WEB, APP, TOTEM, BALCÃO e PICKUP) agora são selecionáveis e o canal escolhido é propagado para pagamento e confirmação.

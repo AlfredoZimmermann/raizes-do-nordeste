@@ -34,7 +34,7 @@
 
     <section id="screen-menu" class="screen">
       <div class="section-head"><div><p class="eyebrow">Cardápio</p><h1>Escolha seu pedido</h1></div><button class="linkbtn" onclick="openOrders()">Meus pedidos</button></div>
-      <div class="channel-strip"><span>Canal:</span><button class="chip selected">WEB</button><button class="chip">APP</button><button class="chip">TOTEM</button><button class="chip">BALCÃO</button><button class="chip">PICKUP</button></div>
+      <div class="channel-strip"><span>Canal:</span><button class="chip selected" data-channel="WEB" onclick="selectChannel('WEB', this)">WEB</button><button class="chip" data-channel="APP" onclick="selectChannel('APP', this)">APP</button><button class="chip" data-channel="TOTEM" onclick="selectChannel('TOTEM', this)">TOTEM</button><button class="chip" data-channel="BALCÃO" onclick="selectChannel('BALCÃO', this)">BALCÃO</button><button class="chip" data-channel="PICKUP" onclick="selectChannel('PICKUP', this)">PICKUP</button></div><p id="channelMsg" class="helper">Canal ativo: WEB</p>
       <div class="grid" id="productGrid"></div>
       <div class="floating-cart" onclick="goCart()"><span>🛒 Carrinho</span><strong id="cartCount">0 itens</strong><span id="cartTotal">R$ 0,00</span></div>
     </section>
@@ -59,12 +59,12 @@
           <label class="radio"><input type="radio" name="pay" value="counter"/> Pagar no balcão</label>
           <label class="check"><input id="saveData" type="checkbox"/> Autorizar armazenamento da preferência de pagamento para facilitar próximos pedidos.</label>
         </div>
-        <div class="card summary"><h2>Confirmação</h2><div><span>Unidade</span><strong>Curitiba Centro</strong></div><div><span>Canal</span><strong>WEB</strong></div><div><span>Total</span><strong id="payTotal">R$ 0,00</strong></div><button class="btn full" onclick="finishOrder()">Confirmar pedido</button><button class="btn secondary full" onclick="simulateFailure()">Simular falha externa</button><p id="payMsg" class="error"></p></div>
+        <div class="card summary"><h2>Confirmação</h2><div><span>Unidade</span><strong>Curitiba Centro</strong></div><div><span>Canal</span><strong id="payChannel">WEB</strong></div><div><span>Total</span><strong id="payTotal">R$ 0,00</strong></div><button class="btn full" onclick="finishOrder()">Confirmar pedido</button><button class="btn secondary full" onclick="simulateFailure()">Simular falha externa</button><p id="payMsg" class="error"></p></div>
       </div>
     </section>
 
     <section id="screen-success" class="screen">
-      <div class="success-card card"><div class="success-icon">✓</div><p class="eyebrow">Pedido confirmado</p><h1 id="orderNumber">Pedido #0000</h1><p>Seu pedido foi registrado com sucesso. Acompanhe o status abaixo.</p><div class="timeline"><span class="done">Recebido</span><span class="active">Em preparo</span><span>Pronto</span><span>Finalizado</span></div><div class="points">+ <strong>18 pontos</strong> no Raízes Fidelidade</div><button class="btn" onclick="newOrder()">Fazer novo pedido</button></div>
+      <div class="success-card card"><div class="success-icon">✓</div><p class="eyebrow">Pedido confirmado</p><h1 id="orderNumber">Pedido #0000</h1><p>Seu pedido foi registrado com sucesso pelo canal <strong id="successChannel">WEB</strong>. Acompanhe o status abaixo.</p><div class="timeline"><span class="done">Recebido</span><span class="active">Em preparo</span><span>Pronto</span><span>Finalizado</span></div><div class="points">+ <strong>18 pontos</strong> no Raízes Fidelidade</div><button class="btn" onclick="newOrder()">Fazer novo pedido</button></div>
     </section>
 
     <section id="screen-orders" class="screen">
